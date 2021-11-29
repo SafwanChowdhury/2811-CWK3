@@ -6,7 +6,7 @@
 //              video for sports enthusiasts...
 //
 //  2811 cw3 : twak 11/11/2021
-//
+//  Initial Commit
 
 #include <iostream>
 #include <QApplication>
