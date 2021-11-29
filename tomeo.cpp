@@ -26,6 +26,11 @@
 #include "the_player.h"
 #include "the_button.h"
 
+// Includes added later
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QLabel>
+
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
@@ -100,6 +105,30 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
+
+    // Create widget of search field and button to accompany it
+
+    QHBoxLayout *search_layout = new QHBoxLayout();
+
+
+    QLineEdit *search_text = new QLineEdit();
+    QPushButton *search_button = new QPushButton();
+    QLabel *l_search = new QLabel();
+    l_search->setText("Search/Filter");
+    search_text->setPlaceholderText("Enter Text");
+    search_button->setText("Search");
+
+
+    //Add widgets to layout
+    search_layout->addWidget(l_search);
+    search_layout->addWidget(search_text);
+    search_layout->addWidget(search_button);
+
+    // Create a widget of the layout made above
+    QWidget *search_widget = new QWidget();
+    search_widget->setLayout(search_layout);
+
+
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -111,9 +140,12 @@ int main(int argc, char *argv[]) {
     QWidget *buttonWidget = new QWidget();
     // a list of the buttons
     std::vector<TheButton*> buttons;
-    // the buttons are arranged horizontally
-    QHBoxLayout *layout = new QHBoxLayout();
+    // These buttons are now arranged vertically
+    QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
+
+
+
 
 
     // create the four buttons
@@ -130,14 +162,45 @@ int main(int argc, char *argv[]) {
 
     // create the main window and layout
     QWidget window;
-    QVBoxLayout *top = new QVBoxLayout();
-    window.setLayout(top);
+
+    // These are the two sides of the screen that are later combined in the 'top' layout
+    QVBoxLayout *left = new QVBoxLayout(); //left side of screen
+    QVBoxLayout *right = new QVBoxLayout(); // right side of screen
+
+
+
     window.setWindowTitle("tomeo");
     window.setMinimumSize(800, 680);
 
-    // add the video and the buttons to the top level widget
-    top->addWidget(videoWidget);
-    top->addWidget(buttonWidget);
+    // This is the top layout, where the left and right side layouts will be combined
+    QHBoxLayout *top = new QHBoxLayout();
+
+    // Add the search bar, search button and the 4 videos to the left side layout
+    left->addWidget(search_widget);
+    left->addWidget(buttonWidget);
+
+    // Add stretch means results stay near the top of the screen rather than spacing evenly
+    left->addStretch(1);
+
+    // Right side of the screen is just the video widget for now
+    right->addWidget(videoWidget);
+
+    // make these layouts into widgets
+    QWidget *left_layout = new QWidget();
+    QWidget *right_layout = new QWidget();
+
+    left_layout->setLayout(left);
+    right_layout->setLayout(right);
+
+    // Taken from stack overflow link - I dont think this is actually needed.
+    top->setContentsMargins( 0, 0, 0, 0 );
+    top->setSpacing( 0 );
+
+    // to create a 1:3 screen ratio of left to right, adding left and right to top level
+    top->addWidget(left_layout, 25);
+    top->addWidget(right_layout, 75);
+
+    window.setLayout(top);
 
     // showtime!
     window.show();
