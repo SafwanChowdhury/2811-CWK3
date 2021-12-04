@@ -166,14 +166,16 @@ int main(int argc, char *argv[]) {
     // These are the two sides of the screen that are later combined in the 'top' layout
     QVBoxLayout *left = new QVBoxLayout(); //left side of screen
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
-    QHBoxLayout *video_buttons = new QHBoxLayout();// buyttons for media player
+    QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
     // Button to play the video
     QPushButton *b_play = new QPushButton();
+    b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
     b_play->setText("Play");
     video_buttons->addWidget(b_play);
     // Button to pause the video
     QPushButton *b_pause = new QPushButton();
+    b_pause->connect(b_pause,SIGNAL(clicked()),player,SLOT(pause()));
     b_pause->setText("Pause");
     video_buttons->addWidget(b_pause);
     // Button to rewind video 5 seconds
@@ -188,8 +190,6 @@ int main(int argc, char *argv[]) {
     // Widget for media player buttons
     QWidget *Player_w = new QWidget();
     Player_w->setLayout(video_buttons);
-
-
 
     window.setWindowTitle("tomeo");
     window.setMinimumSize(800, 680);
