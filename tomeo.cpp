@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
 
-    // the QMediaPlayer which controls the playback
+    // the cont QMediaPlayer whichrols the playback
     ThePlayer *player = new ThePlayer;
     player->setVideoOutput(videoWidget);
 
@@ -166,6 +166,28 @@ int main(int argc, char *argv[]) {
     // These are the two sides of the screen that are later combined in the 'top' layout
     QVBoxLayout *left = new QVBoxLayout(); //left side of screen
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
+    QHBoxLayout *video_buttons = new QHBoxLayout();// buyttons for media player
+
+    // Button to play the video
+    QPushButton *b_play = new QPushButton();
+    b_play->setText("Play");
+    video_buttons->addWidget(b_play);
+    // Button to pause the video
+    QPushButton *b_pause = new QPushButton();
+    b_pause->setText("Pause");
+    video_buttons->addWidget(b_pause);
+    // Button to rewind video 5 seconds
+    QPushButton *b_rewind = new QPushButton();
+    b_rewind->setText("Rewind");
+    video_buttons->addWidget(b_rewind);
+    // Button to fastforward video 5 seconds
+    QPushButton *b_fastforward = new QPushButton();
+    b_fastforward->setText("Fastforward");
+    video_buttons->addWidget(b_fastforward);
+
+    // Widget for media player buttons
+    QWidget *Player_w = new QWidget();
+    Player_w->setLayout(video_buttons);
 
 
 
@@ -183,7 +205,9 @@ int main(int argc, char *argv[]) {
     left->addStretch(1);
 
     // Right side of the screen is just the video widget for now
+
     right->addWidget(videoWidget);
+    right->addWidget(Player_w);
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
