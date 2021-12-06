@@ -30,6 +30,7 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
+#include <QScrollArea>
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -71,6 +72,23 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 }
 
 
+//sets the layout of the search text, button and filter
+void set_search_layout(QHBoxLayout * sl){
+    QLineEdit *search_text = new QLineEdit();
+    QPushButton *search_button = new QPushButton();
+    QLabel *l_search = new QLabel();
+    l_search->setText("Search/Filter");
+    search_text->setPlaceholderText("Enter Text");
+    search_button->setText("Search");
+
+
+    //Add widgets to layout
+    sl->addWidget(l_search);
+    sl->addWidget(search_text);
+    sl->addWidget(search_button);
+}
+
+
 int main(int argc, char *argv[]) {
 
     // let's just check that Qt is operational first
@@ -107,23 +125,9 @@ int main(int argc, char *argv[]) {
 
 
     // Create widget of search field and button to accompany it
-
     QHBoxLayout *search_layout = new QHBoxLayout();
-
-
-    QLineEdit *search_text = new QLineEdit();
-    QPushButton *search_button = new QPushButton();
-    QLabel *l_search = new QLabel();
-    l_search->setText("Search/Filter");
-    search_text->setPlaceholderText("Enter Text");
-    search_button->setText("Search");
-
-
-    //Add widgets to layout
-    search_layout->addWidget(l_search);
-    search_layout->addWidget(search_text);
-    search_layout->addWidget(search_button);
-
+    //set the layout of the search
+    set_search_layout(search_layout);
     // Create a widget of the layout made above
     QWidget *search_widget = new QWidget();
     search_widget->setLayout(search_layout);
@@ -149,7 +153,7 @@ int main(int argc, char *argv[]) {
 
 
     // create the four buttons
-    for ( int i = 0; i < 4; i++ ) {
+    for ( int i = 0; i < 6; i++ ) {
         TheButton *button = new TheButton(buttonWidget);
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
         buttons.push_back(button);
@@ -199,7 +203,12 @@ int main(int argc, char *argv[]) {
 
     // Add the search bar, search button and the 4 videos to the left side layout
     left->addWidget(search_widget);
-    left->addWidget(buttonWidget);
+
+    //testing scroll
+    QScrollArea * videoScroll = new QScrollArea();
+    videoScroll->setWidget(buttonWidget);
+
+    left->addWidget(videoScroll);
 
     // Add stretch means results stay near the top of the screen rather than spacing evenly
     left->addStretch(1);
