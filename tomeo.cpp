@@ -150,16 +150,18 @@ int main(int argc, char *argv[]) {
 
 
 
-
-
-    // create the four buttons
-    for ( int i = 0; i < 6; i++ ) {
-        TheButton *button = new TheButton(buttonWidget);
-        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
-        buttons.push_back(button);
-        layout->addWidget(button);
-        button->init(&videos.at(i));
+    // creates a button for each video
+    //currently this creates 6 buttons (video g doesn't seem to work)
+    if (buttons.size() < 1){
+        for ( auto video : videos ) {
+            TheButton *button = new TheButton(buttonWidget);
+            button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
+            buttons.push_back(button);
+            layout->addWidget(button);
+            button->init(&video);
+        }
     }
+
 
     // tell the player what buttons and videos are available
     player->setContent(&buttons, & videos);
@@ -211,7 +213,8 @@ int main(int argc, char *argv[]) {
     left->addWidget(videoScroll);
 
     // Add stretch means results stay near the top of the screen rather than spacing evenly
-    left->addStretch(1);
+    //removing add stretch allows the scroll area to resize nicely
+    //left->addStretch(1);
 
     // Right side of the screen is just the video widget for now
 
