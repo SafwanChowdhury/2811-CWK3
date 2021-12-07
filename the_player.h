@@ -49,6 +49,7 @@ public slots:
     void jumpTo (TheButtonInfo* button);
     void fstfwrd();
     void rwnd();
+    void switchState();
 };
 
 #endif //CW2_THE_PLAYER_H

@@ -30,8 +30,7 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
-#include <QSlider>
-#include <QProgressBar>
+
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -107,7 +106,6 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
-
     // Create widget of search field and button to accompany it
 
     QHBoxLayout *search_layout = new QHBoxLayout();
@@ -130,7 +128,6 @@ int main(int argc, char *argv[]) {
     QWidget *search_widget = new QWidget();
     search_widget->setLayout(search_layout);
 
-
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -145,45 +142,6 @@ int main(int argc, char *argv[]) {
     // These buttons are now arranged vertically
     QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
-
-
-
-
-
-    // Iteration 2 - volume stuff
-    // Volume slider to control volume of video playback
-    // Label vol_info that updates relative to current volume set
-    QHBoxLayout *vol_layout = new QHBoxLayout();
-
-    QSlider *volume = new QSlider(Qt::Horizontal);
-    volume->setMaximum(100);
-    volume->setMinimum(0);
-    volume->setValue(player->volume());
-    QLabel *vol_label = new QLabel();
-    vol_label->setText("Current Volume:");
-
-    QLabel *vol_info = new QLabel();
-    vol_info->setNum(player->volume());
-
-
-    volume->connect(volume, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
-    vol_info->connect(volume, SIGNAL(valueChanged(int)), vol_info, SLOT(setNum(int)));
-
-
-    vol_layout->addWidget(vol_label);
-    vol_layout->addWidget(vol_info);
-    QWidget *vol_layout_widget = new QWidget();
-
-    vol_layout_widget->setLayout(vol_layout);
-//    int vol = player->volume();
-//    vol_info->setText(QString::number(vol));
-
-
-
-
-
-
-
 
     // create the four buttons
     for ( int i = 0; i < 4; i++ ) {
@@ -204,18 +162,11 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *left = new QVBoxLayout(); //left side of screen
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
-
-    // Button to play the video
-    QPushButton *b_play = new QPushButton();
-    // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
-    b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
-    b_play->setText("Play");
-    video_buttons->addWidget(b_play);
-    // Button to pause the video
-    QPushButton *b_pause = new QPushButton();
-    b_pause->connect(b_pause,SIGNAL(clicked()),player,SLOT(pause()));
-    b_pause->setText("Pause");
-    video_buttons->addWidget(b_pause);
+    // Button to pause/play video
+    QPushButton *b_play_pause = new QPushButton();
+    b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
+    b_play_pause->setText("Play/Pause");
+    video_buttons->addWidget(b_play_pause);
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");
@@ -243,8 +194,7 @@ int main(int argc, char *argv[]) {
 
     // Add stretch means results stay near the top of the screen rather than spacing evenly
     left->addStretch(1);
-    left->addWidget(volume);
-    left->addWidget(vol_layout_widget);
+
 
     // Right side of the screen is just the video widget for now
 
