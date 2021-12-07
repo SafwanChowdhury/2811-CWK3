@@ -205,6 +205,11 @@ int main(int argc, char *argv[]) {
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
         buttons.push_back(button);
         layout->addWidget(button);
+        //adding a video description label
+        QLabel * vidDesc = new QLabel();
+        vidDesc->setText("Title\t dd/mm/yyyy\n");
+        vidDesc->setAlignment(Qt::AlignCenter);
+        layout->addWidget(vidDesc);
         button->init(&video);
     }
 
