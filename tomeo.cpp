@@ -173,11 +173,8 @@ int main(int argc, char *argv[]) {
     QSlider *p_slider = new QSlider();
     p_slider->setOrientation(Qt::Horizontal);
 
-    p_slider->setRange(0, player->duration() / 1000);
-    qDebug("%d",player->duration());
-    //p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
-    //p_slider->setValue(player->getSlider());
-
+    p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
 
     // Button to play the video
     QPushButton *b_play = new QPushButton();

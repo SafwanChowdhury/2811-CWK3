@@ -42,9 +42,8 @@ void ThePlayer::seek(int seconds)
 
 void ThePlayer::positionChanged(qint64 position)
 {
-    //qDebug("hello");
     p_slider->setValue(position/1000);
-    qDebug("%d",duration());
+    emit posChanged(position/1000);
 }
 
 int ThePlayer::getSlider()

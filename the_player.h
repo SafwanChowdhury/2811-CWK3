@@ -51,6 +51,9 @@ public slots:
     void jumpTo (TheButtonInfo* button);
     void seek(int);
     void positionChanged(qint64 position);
+
+signals:
+    void posChanged(int);
 };
 
 #endif //CW2_THE_PLAYER_H
