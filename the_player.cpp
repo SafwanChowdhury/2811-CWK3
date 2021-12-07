@@ -32,3 +32,15 @@ void ThePlayer::jumpTo (TheButtonInfo* button) {
     setMedia( * button -> url);
     play();
 }
+
+void ThePlayer::fstfwrd(){
+    qint64 v_position = this->position();
+    v_position = v_position + 5000;
+    this->setPosition(v_position);
+}
+
+void ThePlayer::rwnd(){
+    qint64 v_position = this->position();
+    v_position = v_position - 5000;
+    this->setPosition(v_position);
+}
