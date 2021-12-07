@@ -3,7 +3,6 @@
 //
 
 #include "the_player.h"
-#include <QDebug>
 
 // all buttons have been setup, store pointers here
 void ThePlayer::setContent(std::vector<TheButton*>* b, std::vector<TheButtonInfo>* i) {
@@ -44,6 +43,11 @@ void ThePlayer::positionChanged(qint64 position)
 {
     p_slider->setValue(position/1000);
     emit posChanged(position/1000);
+}
+
+void ThePlayer::durationChanged(qint64 duration)
+{
+    emit durChanged(duration/1000);
 }
 
 int ThePlayer::getSlider()

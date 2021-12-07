@@ -25,6 +25,7 @@
 #include <QtCore/QDirIterator>
 #include "the_player.h"
 #include "the_button.h"
+#include "my_slider.h"
 
 // Includes added later
 #include <QMediaPlayer>
@@ -170,11 +171,14 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
-    QSlider *p_slider = new QSlider();
-    p_slider->setOrientation(Qt::Horizontal);
+    My_Slider *p_slider = new My_Slider;
 
+    //p_slider->setMaximum()
+    p_slider->setOrientation(Qt::Horizontal);
+    p_slider->setRange(0,19);
     p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
     p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
+    //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
 
     // Button to play the video
     QPushButton *b_play = new QPushButton();
