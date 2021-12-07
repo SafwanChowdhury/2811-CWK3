@@ -30,6 +30,13 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
+#include <QBoxLayout>
+#include <QSlider>
+#include <QStyle>
+#include <QToolButton>
+#include <QComboBox>
+#include <QAudio>
+
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -69,7 +76,6 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
     return out;
 }
-
 
 int main(int argc, char *argv[]) {
 
@@ -112,8 +118,8 @@ int main(int argc, char *argv[]) {
 
 
     QLineEdit *search_text = new QLineEdit();
-    QPushButton *search_button = new QPushButton();
-    QLabel *l_search = new QLabel();
+    QPushButton *search_button = new QPushButton(); // Button
+    QLabel *l_search = new QLabel(); // Text inside
     l_search->setText("Search/Filter");
     search_text->setPlaceholderText("Enter Text");
     search_button->setText("Search");
@@ -168,16 +174,15 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
-    // Button to play the video
-    QPushButton *b_play = new QPushButton();
-    b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
-    b_play->setText("Play");
-    video_buttons->addWidget(b_play);
-    // Button to pause the video
-    QPushButton *b_pause = new QPushButton();
-    b_pause->connect(b_pause,SIGNAL(clicked()),player,SLOT(pause()));
-    b_pause->setText("Pause");
-    video_buttons->addWidget(b_pause);
+
+
+    // Button to play/pause the video
+    QPushButton *b_play_pause = new QPushButton();
+    b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
+    b_play_pause->setText("Play/Pause");
+    video_buttons->addWidget(b_play_pause);
+
+
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");

@@ -32,3 +32,13 @@ void ThePlayer::jumpTo (TheButtonInfo* button) {
     setMedia( * button -> url);
     play();
 }
+
+void ThePlayer::switchState() {
+
+    if(state() == StoppedState) play();
+
+    else if(state() == PlayingState) pause();
+
+    else if(state() == PausedState) play();
+
+}
