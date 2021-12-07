@@ -55,20 +55,18 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
 #if defined(_WIN32)
             if (f.contains(".wmv"))  { // windows
-                std::string fString = f.toStdString();
-                int lastSlash = fString.find_last_of("/");
-                //int lastDot = fString.find_first_of(".");
-                std::string reverse = fString.substr(lastSlash+1, fString.length());
-                QString reverseQ = QString::fromStdString(reverse.substr(0, reverse.find_first_of(".")));
-                titles.push_back(reverseQ);
+//                std::string fString = f.toStdString();
+//                int lastSlash = fString.find_last_of("/");
+//                std::string reverse = fString.substr(lastSlash+1, fString.length());
+//                QString reverseQ = QString::fromStdString(reverse.substr(0, reverse.find_first_of(".")));
+//                titles.push_back(reverseQ);
 #else
             if (f.contains(".mp4") || f.contains("MOV"))  { // mac/linux
-                std::string fString = f.toStdString();
-                int lastSlash = fString.find_last_of("/");
-               // int dot
-                QString reverse = QString::fromStdString(fString.substr(lastSlash+1, fString.length()));
-
-                titles.push_back(reverse);
+//                std::string fString = f.toStdString();
+//                int lastSlash = fString.find_last_of("/");
+//                std::string reverse = fString.substr(lastSlash+1, fString.length());
+//                QString reverseQ = QString::fromStdString(reverse.substr(0, reverse.find_first_of(".")));
+//                titles.push_back(reverseQ);
 #endif
 
             QString thumb = f.left( f .length() - 4) +".png";
@@ -79,6 +77,11 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
                         QIcon* ico = new QIcon(QPixmap::fromImage(sprite)); // voodoo to create an icon for the button
                         QUrl* url = new QUrl(QUrl::fromLocalFile( f )); // convert the file location to a generic url
                         out . push_back(TheButtonInfo( url , ico  ) ); // add to the output list
+                        std::string fString = f.toStdString();
+                        int lastSlash = fString.find_last_of("/");
+                        std::string reverse = fString.substr(lastSlash+1, fString.length());
+                        QString reverseQ = QString::fromStdString(reverse.substr(0, reverse.find_first_of(".")));
+                        titles.push_back(reverseQ);
                     }
                     else
                         qDebug() << "warning: skipping video because I couldn't process thumbnail " << thumb << endl;
@@ -106,6 +109,16 @@ void set_search_layout(QHBoxLayout * sl){
     sl->addWidget(l_search);
     sl->addWidget(search_text);
     sl->addWidget(search_button);
+}
+
+std::vector<int> search_results(QString sQuery) {
+    std::vector<int> indices;
+    for (int i = 0; i < titles.size(); i++ ) {
+        if (titles.at(i).contains(sQuery)) {
+            indices.push_back(i);
+        }
+    }
+    return indices;
 }
 
 
@@ -218,19 +231,34 @@ int main(int argc, char *argv[]) {
 
 
     // create the four buttons
-    int counter = 0;
-     for ( auto video : videos ) {
-        TheButton *button = new TheButton(buttonWidget);
-        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
-        buttons.push_back(button);
-        layout->addWidget(button);
-        //adding a video description label
-        QLabel * vidDesc = new QLabel();
-        vidDesc->setText(titles.at(counter) +"\t dd/mm/yyyy\n");
-        vidDesc->setAlignment(Qt::AlignCenter);
-        layout->addWidget(vidDesc);
-        button->init(&video);
-        counter ++;
+//     int counter = 0;
+//     for ( auto video : videos ) {
+//        TheButton *button = new TheButton(buttonWidget);
+//        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
+//        buttons.push_back(button);
+//        layout->addWidget(button);
+//        //adding a video description label
+//        QLabel * vidDesc = new QLabel();
+//        vidDesc->setText(titles.at(counter) +"\t dd/mm/yyyy\n");
+//        vidDesc->setAlignment(Qt::AlignCenter);
+//        layout->addWidget(vidDesc);
+//        button->init(&video);
+//        counter ++;
+//    }
+
+    if (search_results("d").size() != 0) {
+        for(auto index : search_results("d")) {
+            TheButton *button = new TheButton(buttonWidget);
+            button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
+            buttons.push_back(button);
+            layout->addWidget(button);
+            //adding a video description label
+            QLabel * vidDesc = new QLabel();
+            vidDesc->setText(titles.at(index) +"\t dd/mm/yyyy\n");
+            vidDesc->setAlignment(Qt::AlignCenter);
+            layout->addWidget(vidDesc);
+            button->init(&videos.at(index));
+        }
     }
 
 
