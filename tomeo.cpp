@@ -180,12 +180,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    //Progress Bar
-    QProgressBar *pbar = new QProgressBar();
-    pbar->setRange(0,1000000);
-    pbar->setValue(500000);
 
-    pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
 
 
 
@@ -254,7 +249,7 @@ int main(int argc, char *argv[]) {
     // Right side of the screen is just the video widget for now
 
     right->addWidget(videoWidget);
-    right->addWidget(pbar);
+
     right->addWidget(Player_w);
 
 
