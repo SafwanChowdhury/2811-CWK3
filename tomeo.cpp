@@ -190,11 +190,11 @@ int main(int argc, char *argv[]) {
 
 
     //Progress Bar
-    QProgressBar *pbar = new QProgressBar();
-    pbar->setRange(0,1000000);
-    pbar->setValue(500000);
+    //QProgressBar *pbar = new QProgressBar();
+    //pbar->setRange(0,1000000);
+    //pbar->setValue(500000);
 
-    pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
+    //pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
 
 
 
@@ -221,6 +221,14 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
+	QSlider *p_slider = new QSlider();
+
+    //p_slider->setMaximum()
+    p_slider->setOrientation(Qt::Horizontal);
+    p_slider->setRange(0,19);
+    p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
+    //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
     // Button to play the video
     QPushButton *b_play = new QPushButton();
     // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
@@ -271,8 +279,8 @@ int main(int argc, char *argv[]) {
     // Right side of the screen is just the video widget for now
 
     right->addWidget(videoWidget);
-    right->addWidget(pbar);
     right->addWidget(Player_w);
+	right->addWidget(p_slider);
 
 
     // make these layouts into widgets
