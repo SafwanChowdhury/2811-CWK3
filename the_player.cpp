@@ -33,6 +33,26 @@ void ThePlayer::jumpTo (TheButtonInfo* button) {
     play();
 }
 
+void ThePlayer::seek(int seconds)
+{
+    this->setPosition(seconds * 1000);
+}
+
+void ThePlayer::positionChanged(qint64 position)
+{
+    p_slider->setValue(position/1000);
+    emit posChanged(position/1000);
+}
+
+void ThePlayer::durationChanged(qint64 duration)
+{
+    emit durChanged(duration/1000);
+}
+
+int ThePlayer::getSlider()
+{
+    return p_slider->value();
+}
 void ThePlayer::fstfwrd(){
     qint64 v_position = this->position();
     v_position = v_position + 5000;
