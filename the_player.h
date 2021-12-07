@@ -29,7 +29,7 @@ public:
         connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (playStateChanged(QMediaPlayer::State)) );
 
         mTimer = new QTimer(NULL);
-        mTimer->setInterval(1000); // 1000ms is one second between ...
+        mTimer->setInterval(1); // 1000ms is one second between ...
         mTimer->start();
 		connect(this,SIGNAL(positionChanged(qint64)),this,SLOT(positionChanged(qint64)));
         connect(this,SIGNAL(durationChanged(qint64)),this,SLOT(durationChanged(qint64)));																				 																					 
