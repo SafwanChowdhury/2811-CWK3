@@ -56,6 +56,7 @@ public slots:
     void durationChanged(qint64 duration);			   					 
     void fstfwrd();
     void rwnd();
+    void switchState();
 signals:
 	void posChanged(int);
     void durChanged(int);

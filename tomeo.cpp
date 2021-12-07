@@ -229,17 +229,13 @@ int main(int argc, char *argv[]) {
     p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
     p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
     //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
-    // Button to play the video
-    QPushButton *b_play = new QPushButton();
+
     // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
-    b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
-    b_play->setText("Play");
-    video_buttons->addWidget(b_play);
-    // Button to pause the video
-    QPushButton *b_pause = new QPushButton();
-    b_pause->connect(b_pause,SIGNAL(clicked()),player,SLOT(pause()));
-    b_pause->setText("Pause");
-    video_buttons->addWidget(b_pause);
+    // Button to play/pause the video
+    QPushButton *b_play_pause = new QPushButton();
+    b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
+    b_play_pause->setText("Play/Pause");
+    video_buttons->addWidget(b_play_pause);
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");

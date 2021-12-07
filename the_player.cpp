@@ -64,3 +64,13 @@ void ThePlayer::rwnd(){
     v_position = v_position - 5000;
     this->setPosition(v_position);
 }
+
+void ThePlayer::switchState() {
+
+    if(state() == StoppedState) play();
+
+    else if(state() == PlayingState) pause();
+
+    else if(state() == PausedState) play();
+
+}
