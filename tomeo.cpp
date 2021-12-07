@@ -31,6 +31,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QSlider>
+#include <QProgressBar>
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -179,8 +180,12 @@ int main(int argc, char *argv[]) {
 
 
 
+    //Progress Bar
+    QProgressBar *pbar = new QProgressBar();
+    pbar->setRange(0,1000000);
+    pbar->setValue(500000);
 
-
+    pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
 
 
 
@@ -219,10 +224,12 @@ int main(int argc, char *argv[]) {
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");
+    b_rewind->connect(b_rewind, SIGNAL(clicked()), player, SLOT(rwnd()));
     video_buttons->addWidget(b_rewind);
     // Button to fastforward video 5 seconds
     QPushButton *b_fastforward = new QPushButton();
     b_fastforward->setText("Fastforward");
+    b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
     video_buttons->addWidget(b_fastforward);
 
     // Widget for media player buttons
@@ -247,7 +254,9 @@ int main(int argc, char *argv[]) {
     // Right side of the screen is just the video widget for now
 
     right->addWidget(videoWidget);
+    right->addWidget(pbar);
     right->addWidget(Player_w);
+
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
