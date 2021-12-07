@@ -25,8 +25,11 @@
 #include <QtCore/QDirIterator>
 #include "the_player.h"
 #include "the_button.h"
+					  
 
 // Includes added later
+					   
+				  
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
@@ -129,9 +132,23 @@ int main(int argc, char *argv[]) {
 
 
     // Create widget of search field and button to accompany it
+
     QHBoxLayout *search_layout = new QHBoxLayout();
     //set the layout of the search
+
+											 
+												   
+									
+									   
+												  
+									 
+
+
+						   
+									   
     set_search_layout(search_layout);
+											
+
     // Create a widget of the layout made above
     QWidget *search_widget = new QWidget();
     search_widget->setLayout(search_layout);
@@ -216,6 +233,23 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
+	My_Slider *p_slider = new My_Slider;
+
+    //p_slider->setMaximum()
+    p_slider->setOrientation(Qt::Horizontal);
+    p_slider->setRange(0,19);
+    p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
+    //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
+									
+							   
+											
+										
+																  
+							
+									 
+								
+											 
     // Button to play the video
     QPushButton *b_play = new QPushButton();
     // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
@@ -268,7 +302,7 @@ int main(int argc, char *argv[]) {
     right->addWidget(videoWidget);
 
     right->addWidget(Player_w);
-
+	right->addWidget(p_slider);
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
