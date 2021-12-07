@@ -31,6 +31,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QScrollArea>
+#include <QSizePolicy>
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -73,6 +74,7 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
 
 //sets the layout of the search text, button and filter
+
 void set_search_layout(QHBoxLayout * sl){
     QLineEdit *search_text = new QLineEdit();
     QPushButton *search_button = new QPushButton();
@@ -81,12 +83,12 @@ void set_search_layout(QHBoxLayout * sl){
     search_text->setPlaceholderText("Enter Text");
     search_button->setText("Search");
 
-
     //Add widgets to layout
     sl->addWidget(l_search);
     sl->addWidget(search_text);
     sl->addWidget(search_button);
 }
+
 
 
 int main(int argc, char *argv[]) {
@@ -152,15 +154,15 @@ int main(int argc, char *argv[]) {
 
     // creates a button for each video
     //currently this creates 6 buttons (video g doesn't seem to work)
-    if (buttons.size() < 1){
-        for ( auto video : videos ) {
-            TheButton *button = new TheButton(buttonWidget);
-            button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
-            buttons.push_back(button);
-            layout->addWidget(button);
-            button->init(&video);
-        }
+
+    for ( auto video : videos ) {
+        TheButton *button = new TheButton(buttonWidget);
+        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
+        buttons.push_back(button);
+        layout->addWidget(button);
+        button->init(&video);
     }
+
 
 
     // tell the player what buttons and videos are available
@@ -206,10 +208,10 @@ int main(int argc, char *argv[]) {
     // Add the search bar, search button and the 4 videos to the left side layout
     left->addWidget(search_widget);
 
-    //testing scroll
+    //implementing scroll area
     QScrollArea * videoScroll = new QScrollArea();
     videoScroll->setWidget(buttonWidget);
-
+    videoScroll->setAlignment(Qt::AlignHCenter);
     left->addWidget(videoScroll);
 
     // Add stretch means results stay near the top of the screen rather than spacing evenly
@@ -236,7 +238,27 @@ int main(int argc, char *argv[]) {
     top->addWidget(left_layout, 25);
     top->addWidget(right_layout, 75);
 
-    window.setLayout(top);
+    //creating a placeholder layout for the menu
+    QHBoxLayout * MLayout = new QHBoxLayout();
+    QLabel * MenuText = new QLabel();
+    //creating placeholder text for the menu, this will be replaced by buttons later
+    MenuText->setText("Menu");
+    MenuText->setAlignment(Qt::AlignCenter);
+    MenuText->setFrameStyle(1);
+    MLayout->addWidget(MenuText);
+    QWidget * menuBar = new QWidget();
+    menuBar->setLayout(MLayout);
+
+    //layout for the rest of the page
+    QWidget * topWidget = new QWidget();
+    topWidget->setLayout(top);
+    //final layout
+    QVBoxLayout * screenLayout = new QVBoxLayout();
+    screenLayout->addWidget(menuBar,15);
+    screenLayout->addWidget(topWidget, 85);
+
+
+    window.setLayout(screenLayout);
 
     // showtime!
     window.show();
