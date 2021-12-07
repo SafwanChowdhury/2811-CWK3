@@ -25,11 +25,11 @@
 #include <QtCore/QDirIterator>
 #include "the_player.h"
 #include "the_button.h"
-					  
+#include "my_slider.h"					  
 
 // Includes added later
 					   
-				  
+#include <QMediaPlayer>				  
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
