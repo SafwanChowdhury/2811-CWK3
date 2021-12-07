@@ -53,4 +53,16 @@ void ThePlayer::durationChanged(qint64 duration)
 int ThePlayer::getSlider()
 {
     return p_slider->value();
+
+void ThePlayer::fstfwrd(){
+    qint64 v_position = this->position();
+    v_position = v_position + 5000;
+    this->setPosition(v_position);
+}
+
+void ThePlayer::rwnd(){
+    qint64 v_position = this->position();
+    v_position = v_position - 5000;
+    this->setPosition(v_position);
+
 }

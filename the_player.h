@@ -58,6 +58,8 @@ public slots:
 signals:
     void posChanged(int);
     void durChanged(int);
+    void fstfwrd();
+    void rwnd();
 };
 
 #endif //CW2_THE_PLAYER_H
