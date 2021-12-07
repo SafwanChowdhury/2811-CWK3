@@ -118,6 +118,14 @@ std::vector<int> search_results(QString sQuery) {
             indices.push_back(i);
         }
     }
+
+    //if no videos match: repopulate indices
+    //todo: create pop up
+    if (indices.size() == 0){
+        for (int i = 0; i < titles.size(); i++){
+            indices.push_back(i);
+        }
+    }
     return indices;
 }
 
@@ -246,11 +254,16 @@ int main(int argc, char *argv[]) {
 //        counter ++;
 //    }
 
-    if (search_results("d").size() != 0) {
-        for(auto index : search_results("d")) {
+    std::vector<TheButtonInfo> searchVideos;
+    std::vector<int> searchIndices = search_results("a");
+
+
+    if (searchIndices.size() != 0) {
+        for(auto index : searchIndices) {
             TheButton *button = new TheButton(buttonWidget);
             button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
             buttons.push_back(button);
+            searchVideos.push_back(videos.at(index));
             layout->addWidget(button);
             //adding a video description label
             QLabel * vidDesc = new QLabel();
@@ -264,7 +277,7 @@ int main(int argc, char *argv[]) {
 
 
     // tell the player what buttons and videos are available
-    player->setContent(&buttons, & videos);
+    player->setContent(&buttons, & searchVideos);
 
     // create the main window and layout
     QWidget window;
