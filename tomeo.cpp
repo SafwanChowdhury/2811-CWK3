@@ -235,7 +235,7 @@ int main(int argc, char *argv[]) {
     QPushButton *b_play_pause = new QPushButton();
     b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
     b_play_pause->setText("Play/Pause");
-    video_buttons->addWidget(b_play_pause);
+
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");
@@ -245,6 +245,8 @@ int main(int argc, char *argv[]) {
     QPushButton *b_fastforward = new QPushButton();
     b_fastforward->setText("Fastforward");
     b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
+    //add play pause to the middle
+    video_buttons->addWidget(b_play_pause);
     video_buttons->addWidget(b_fastforward);
 
     // Widget for media player buttons
