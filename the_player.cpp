@@ -3,6 +3,7 @@
 //
 
 #include "the_player.h"
+#include <QDebug>
 
 // all buttons have been setup, store pointers here
 void ThePlayer::setContent(std::vector<TheButton*>* b, std::vector<TheButtonInfo>* i) {
@@ -29,6 +30,24 @@ void ThePlayer::playStateChanged (QMediaPlayer::State ms) {
 }
 
 void ThePlayer::jumpTo (TheButtonInfo* button) {
+
     setMedia( * button -> url);
     play();
+}
+
+void ThePlayer::seek(int seconds)
+{
+    this->setPosition(seconds * 1000);
+}
+
+void ThePlayer::positionChanged(qint64 position)
+{
+    //qDebug("hello");
+    p_slider->setValue(position/1000);
+    qDebug("%d",duration());
+}
+
+int ThePlayer::getSlider()
+{
+    return p_slider->value();
 }

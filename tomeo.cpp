@@ -27,6 +27,8 @@
 #include "the_button.h"
 
 // Includes added later
+#include <QMediaPlayer>
+#include <QSlider>
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QLabel>
@@ -168,6 +170,15 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
+    QSlider *p_slider = new QSlider();
+    p_slider->setOrientation(Qt::Horizontal);
+
+    p_slider->setRange(0, player->duration() / 1000);
+    qDebug("%d",player->duration());
+    //p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    //p_slider->setValue(player->getSlider());
+
+
     // Button to play the video
     QPushButton *b_play = new QPushButton();
     b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
@@ -208,6 +219,7 @@ int main(int argc, char *argv[]) {
 
     right->addWidget(videoWidget);
     right->addWidget(Player_w);
+    right->addWidget(p_slider);
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
