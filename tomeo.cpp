@@ -32,6 +32,8 @@
 #include <QLabel>
 #include <QScrollArea>
 #include <QSizePolicy>
+#include <QSlider>
+#include <QProgressBar>
 
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
@@ -155,7 +157,50 @@ int main(int argc, char *argv[]) {
     // creates a button for each video
     //currently this creates 6 buttons (video g doesn't seem to work)
 
-    for ( auto video : videos ) {
+   
+
+    // Iteration 2 - volume stuff
+    // Volume slider to control volume of video playback
+    // Label vol_info that updates relative to current volume set
+    QHBoxLayout *vol_layout = new QHBoxLayout();
+
+    QSlider *volume = new QSlider(Qt::Horizontal);
+    volume->setMaximum(100);
+    volume->setMinimum(0);
+    volume->setValue(player->volume());
+    QLabel *vol_label = new QLabel();
+    vol_label->setText("Current Volume:");
+
+    QLabel *vol_info = new QLabel();
+    vol_info->setNum(player->volume());
+
+
+    volume->connect(volume, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
+    vol_info->connect(volume, SIGNAL(valueChanged(int)), vol_info, SLOT(setNum(int)));
+
+
+    vol_layout->addWidget(vol_label);
+    vol_layout->addWidget(vol_info);
+    QWidget *vol_layout_widget = new QWidget();
+
+    vol_layout_widget->setLayout(vol_layout);
+//    int vol = player->volume();
+//    vol_info->setText(QString::number(vol));
+
+
+
+    //Progress Bar
+    QProgressBar *pbar = new QProgressBar();
+    pbar->setRange(0,1000000);
+    pbar->setValue(500000);
+
+    pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
+
+
+
+
+    // create the four buttons
+     for ( auto video : videos ) {
         TheButton *button = new TheButton(buttonWidget);
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
         buttons.push_back(button);
@@ -178,6 +223,7 @@ int main(int argc, char *argv[]) {
 
     // Button to play the video
     QPushButton *b_play = new QPushButton();
+    // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
     b_play->connect(b_play,SIGNAL(clicked()),player,SLOT(play()));
     b_play->setText("Play");
     video_buttons->addWidget(b_play);
@@ -189,10 +235,12 @@ int main(int argc, char *argv[]) {
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");
+    b_rewind->connect(b_rewind, SIGNAL(clicked()), player, SLOT(rwnd()));
     video_buttons->addWidget(b_rewind);
     // Button to fastforward video 5 seconds
     QPushButton *b_fastforward = new QPushButton();
     b_fastforward->setText("Fastforward");
+    b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
     video_buttons->addWidget(b_fastforward);
 
     // Widget for media player buttons
@@ -217,11 +265,15 @@ int main(int argc, char *argv[]) {
     // Add stretch means results stay near the top of the screen rather than spacing evenly
     //removing add stretch allows the scroll area to resize nicely
     //left->addStretch(1);
+    left->addWidget(volume);
+    left->addWidget(vol_layout_widget);
 
     // Right side of the screen is just the video widget for now
 
     right->addWidget(videoWidget);
+    right->addWidget(pbar);
     right->addWidget(Player_w);
+
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
