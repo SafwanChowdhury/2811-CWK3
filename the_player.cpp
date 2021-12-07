@@ -12,7 +12,7 @@ void ThePlayer::setContent(std::vector<TheButton*>* b, std::vector<TheButtonInfo
 }
 
 // change the image and video for one button every one second
-//
+//no longer changes
 void ThePlayer::shuffle() {
     for (int x = 0; x < buttons->size(); x++){
         TheButtonInfo* i = & infos -> at (x);

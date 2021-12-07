@@ -35,6 +35,9 @@
 #include <QSlider>
 #include <QProgressBar>
 
+std::vector<QString> titles;
+//QString path;
+
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
@@ -46,12 +49,26 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
         QString f = it.next();
 
+
+
             if (f.contains("."))
 
 #if defined(_WIN32)
             if (f.contains(".wmv"))  { // windows
+                std::string fString = f.toStdString();
+                int lastSlash = fString.find_last_of("/");
+                //int lastDot = fString.find_first_of(".");
+                std::string reverse = fString.substr(lastSlash+1, fString.length());
+                QString reverseQ = QString::fromStdString(reverse.substr(0, reverse.find_first_of(".")));
+                titles.push_back(reverseQ);
 #else
             if (f.contains(".mp4") || f.contains("MOV"))  { // mac/linux
+                std::string fString = f.toStdString();
+                int lastSlash = fString.find_last_of("/");
+               // int dot
+                QString reverse = QString::fromStdString(fString.substr(lastSlash+1, fString.length()));
+
+                titles.push_back(reverse);
 #endif
 
             QString thumb = f.left( f .length() - 4) +".png";
@@ -104,6 +121,7 @@ int main(int argc, char *argv[]) {
     // collect all the videos in the folder
     std::vector<TheButtonInfo> videos;
 
+   // path = argv[0];
     if (argc == 2)
         videos = getInfoIn( std::string(argv[1]) );
 
@@ -200,6 +218,7 @@ int main(int argc, char *argv[]) {
 
 
     // create the four buttons
+    int counter = 0;
      for ( auto video : videos ) {
         TheButton *button = new TheButton(buttonWidget);
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
@@ -207,10 +226,11 @@ int main(int argc, char *argv[]) {
         layout->addWidget(button);
         //adding a video description label
         QLabel * vidDesc = new QLabel();
-        vidDesc->setText("Title\t dd/mm/yyyy\n");
+        vidDesc->setText(titles.at(counter) +"\t dd/mm/yyyy\n");
         vidDesc->setAlignment(Qt::AlignCenter);
         layout->addWidget(vidDesc);
         button->init(&video);
+        counter ++;
     }
 
 
