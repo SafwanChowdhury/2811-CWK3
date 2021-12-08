@@ -149,6 +149,11 @@ void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
     pl->addWidget(b_fastforward);
 }
 
+void set_right_layout(QVBoxLayout * right, QWidget * Player_w, QVideoWidget * videoWidget, QSlider * slider){
+    right->addWidget(videoWidget);
+    right->addWidget(slider);
+    right->addWidget(Player_w);
+}
 
 std::vector<int> search_results(QString sQuery) {
     std::vector<int> indices;
@@ -233,11 +238,6 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
 
-
-    // creates a button for each video
-    //currently this creates 6 buttons (video g doesn't seem to work)
-
-
     // Iteration 2 - volume stuff
     // Volume slider to control volume of video playback
     // Label vol_info that updates relative to current volume set
@@ -248,7 +248,6 @@ int main(int argc, char *argv[]) {
 
     std::vector<TheButtonInfo> searchVideos;
     std::vector<int> searchIndices = search_results("abc");
-
 
     if (searchIndices.size() != 0) {
         for(auto index : searchIndices) {
@@ -265,8 +264,6 @@ int main(int argc, char *argv[]) {
             button->init(&videos.at(index));
         }
     }
-
-
 
     // tell the player what buttons and videos are available
     player->setContent(&buttons, & searchVideos);
@@ -320,10 +317,7 @@ int main(int argc, char *argv[]) {
     left->addWidget(vol_layout_widget);
 
     // Right side of the screen is just the video widget for now
-
-    right->addWidget(videoWidget);    
-    right->addWidget(player->p_slider);
-    right->addWidget(Player_w);
+    set_right_layout(right, Player_w, videoWidget, player->p_slider);
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
@@ -332,24 +326,11 @@ int main(int argc, char *argv[]) {
     left_layout->setLayout(left);
     right_layout->setLayout(right);
 
-    // Taken from stack overflow link - I dont think this is actually needed.
-    top->setContentsMargins( 0, 0, 0, 0 );
-    top->setSpacing( 0 );
-
     // to create a 1:3 screen ratio of left to right, adding left and right to top level
     top->addWidget(left_layout, 25);
     top->addWidget(right_layout, 75);
 
-
-    //layout for the rest of the page
-    QWidget * topWidget = new QWidget();
-    topWidget->setLayout(top);
-    //final layout
-    QVBoxLayout * screenLayout = new QVBoxLayout();
-    screenLayout->addWidget(topWidget, 85);
-
-
-    window.setLayout(screenLayout);
+    window.setLayout(top);
 
     // showtime!
     window.show();
