@@ -34,7 +34,6 @@
 #include <QSizePolicy>
 #include <QSlider>
 #include <QProgressBar>
-#include <QFile>
 std::vector<QString> titles;
 //QString path;
 
@@ -137,11 +136,6 @@ int main(int argc, char *argv[]) {
 
     // create the Qt Application
     QApplication app(argc, argv);
-
-    QFile styleSheetFile("./TomeoStyle.qss");
-    styleSheetFile.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(styleSheetFile.readAll());
-    app.setStyleSheet(styleSheet);
 
     // collect all the videos in the folder
     std::vector<TheButtonInfo> videos;
