@@ -22,8 +22,8 @@ private:
     std::vector<TheButton*>* buttons;
     QTimer* mTimer;
     long updateCount = 0;
-	QSlider *p_slider = new QSlider();
 public:
+    QSlider *p_slider = new QSlider();
     ThePlayer() : QMediaPlayer(NULL) {
         setVolume(10); // be slightly less annoying
         connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (playStateChanged(QMediaPlayer::State)) );

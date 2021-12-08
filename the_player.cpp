@@ -50,6 +50,8 @@ void ThePlayer::positionChanged(qint64 position)
 
 void ThePlayer::durationChanged(qint64 duration)
 {
+    p_slider->setRange(0,duration/1000);
+    qDebug("%d",p_slider->maximum());
     emit durChanged(duration/1000);
 }
 

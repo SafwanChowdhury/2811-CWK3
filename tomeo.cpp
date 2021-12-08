@@ -255,7 +255,7 @@ int main(int argc, char *argv[]) {
 //    }
 
     std::vector<TheButtonInfo> searchVideos;
-    std::vector<int> searchIndices = search_results("a");
+    std::vector<int> searchIndices = search_results("d");
 
 
     if (searchIndices.size() != 0) {
@@ -287,13 +287,13 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
-	QSlider *p_slider = new QSlider();
+    //QSlider *p_slider = new QSlider();
 
     //p_slider->setMaximum()
-    p_slider->setOrientation(Qt::Horizontal);
-    p_slider->setRange(0,19);
-    p_slider->connect(p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
-    p_slider->connect(player,SIGNAL(posChanged(int)),p_slider,SLOT(setValue(int)));
+    player->p_slider->setOrientation(Qt::Horizontal);
+    //player->p_slider->setRange(0,19);
+    player->p_slider->connect(player->p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    player->p_slider->connect(player,SIGNAL(posChanged(int)),player->p_slider,SLOT(setValue(int)));
     //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
 
     // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
@@ -344,7 +344,7 @@ int main(int argc, char *argv[]) {
 
     right->addWidget(videoWidget);
     right->addWidget(Player_w);
-	right->addWidget(p_slider);
+    right->addWidget(player->p_slider);
 
 
     // make these layouts into widgets
