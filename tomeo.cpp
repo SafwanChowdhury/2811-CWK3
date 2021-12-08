@@ -101,6 +101,7 @@ void set_search_layout(QHBoxLayout * sl){
     QLineEdit *search_text = new QLineEdit();
     QPushButton *search_button = new QPushButton();
     QLabel *l_search = new QLabel();
+    //search_text->connect(search_text,SIGNAL(textEdited(const QString &text),player,SLOT(search(const QString &text))))
     l_search->setText("Search/Filter");
     search_text->setPlaceholderText("Enter Text");
     search_button->setText("Search");
@@ -167,14 +168,6 @@ int main(int argc, char *argv[]) {
     }
 
 
-    // Create widget of search field and button to accompany it
-    QHBoxLayout *search_layout = new QHBoxLayout();
-    //set the layout of the search
-    set_search_layout(search_layout);
-    // Create a widget of the layout made above
-    QWidget *search_widget = new QWidget();
-    search_widget->setLayout(search_layout);
-
 
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
@@ -190,6 +183,27 @@ int main(int argc, char *argv[]) {
     // These buttons are now arranged vertically
     QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
+
+
+
+    // Create widget of search field and button to accompany it
+    QHBoxLayout *sl = new QHBoxLayout();
+    //set the layout of the search
+    QLineEdit *search_text = new QLineEdit();
+    QPushButton *search_button = new QPushButton();
+    QLabel *l_search = new QLabel();
+    l_search->setText("Search/Filter");
+    search_text->setPlaceholderText("Enter Text");
+    search_button->setText("Search");
+    search_text->connect(search_text,SIGNAL(textEdited(const QString)),player,SLOT(search(const QString)));
+
+    //Add widgets to layout
+    sl->addWidget(l_search);
+    sl->addWidget(search_text);
+    sl->addWidget(search_button);
+    // Create a widget of the layout made above
+    QWidget *search_widget = new QWidget();
+    search_widget->setLayout(sl);
 
 
 
@@ -254,8 +268,23 @@ int main(int argc, char *argv[]) {
 //        counter ++;
 //    }
 
+
+//    QLineEdit *search_text = new QLineEdit();
+//    QPushButton *search_button = new QPushButton();
+//    QLabel *l_search = new QLabel();
+//    search_text->connect(search_text,SIGNAL(textEdited(const QString &text),player,SLOT(search(const QString &text))))
+//    l_search->setText("Search/Filter");
+//    search_text->setPlaceholderText("Enter Text");
+//    search_button->setText("Search");
+
+//    //Add widgets to layout
+//    sl->addWidget(l_search);
+//    sl->addWidget(search_text);
+//    sl->addWidget(search_button);
+
     std::vector<TheButtonInfo> searchVideos;
-    std::vector<int> searchIndices = search_results("d");
+    std::vector<int> searchIndices = search_results(player->s_result);//tag////////////
+    qDebug(player->s_result.toLatin1());
 
 
     if (searchIndices.size() != 0) {

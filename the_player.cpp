@@ -80,3 +80,9 @@ void ThePlayer::switchState() {
     else if(state() == PausedState) play();
 
 }
+
+void ThePlayer::search(const QString &text)
+{
+    s_result = text.toUtf8();
+    //qDebug(s_result.toLatin1());
+}

@@ -24,6 +24,7 @@ private:
     long updateCount = 0;
 public:
     QSlider *p_slider = new QSlider();
+    QString s_result;
     ThePlayer() : QMediaPlayer(NULL) {
         setVolume(10); // be slightly less annoying
         connect (this, SIGNAL (stateChanged(QMediaPlayer::State)), this, SLOT (playStateChanged(QMediaPlayer::State)) );
@@ -57,6 +58,7 @@ public slots:
     void fstfwrd();
     void rwnd();
     void switchState();
+    void search(const QString &text);
 signals:
 	void posChanged(int);
     void durChanged(int);
