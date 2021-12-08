@@ -309,7 +309,7 @@ int main(int argc, char *argv[]) {
     video_buttons->addWidget(b_rewind);
     // Button to fastforward video 5 seconds
     QPushButton *b_fastforward = new QPushButton();
-    b_fastforward->setText("Fastforward");
+    b_fastforward->setText("Fast Forward");
     b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
     //add play pause to the middle
     video_buttons->addWidget(b_play_pause);
