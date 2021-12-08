@@ -8,6 +8,15 @@ QWidget
 
 }
 
+/*-----QLineEdit-----*/
+QLineEdit
+{
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(24, 25, 29, 255),stop:1 rgba(42, 44, 51, 255));
+        color: #ffffff;
+        border-color: #ffffff;
+
+}
+
 
 /*-----QLabel-----*/
 QLabel
@@ -21,7 +30,7 @@ QLabel
 QLabel::disabled
 {
 	background-color: transparent;
-	color: gray;
+        color: gray;
 
 }
 
@@ -117,9 +126,9 @@ QMenu::item:disabled
 /*-----QPushButton-----*/
 QPushButton
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(151, 109, 82, 255),stop:1 rgba(120, 87, 65, 255));
-	color: #000000;
-	border-color: #000000;
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 191, 255, 255),stop:1 rgba(38, 121, 255, 255));
+        color: #ffffff;
+        border-color: #000000;
 	border-radius: 3px;
 
 }
@@ -127,8 +136,8 @@ QPushButton
 
 QPushButton::hover
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(171, 129, 102, 255),stop:1 rgba(140, 107, 85, 255));
-	color: #000000;
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(86, 195, 255, 255),stop:1 rgba(86, 158, 255, 255));
+        color: #ffffff;
 	border-color: #000000;
 	border-radius: 3px;
 
@@ -137,8 +146,8 @@ QPushButton::hover
 
 QPushButton::pressed
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(121, 79, 52, 255),stop:1 rgba(90, 57, 35, 255));
-	color: #000000;
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(55, 105, 255, 255),stop:1 rgba(55, 75, 255, 255));
+        color: #ffffff;
 	border-color: #000000;
 	border-radius: 3px;
 
@@ -147,7 +156,7 @@ QPushButton::pressed
 
 QPushButton::checked
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(121, 79, 52, 255),stop:1 rgba(90, 57, 35, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(55, 105, 255, 255),stop:1 rgba(55, 75, 255, 255));
 	color: #000000;
 	border-color: #000000;
 	border-radius: 3px;
@@ -172,7 +181,7 @@ QSlider::groove:horizontal
 
 QSlider::sub-page:horizontal 
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(121, 79, 52, 255),stop:1 rgba(90, 57, 35, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(86, 195, 255, 255),stop:1 rgba(86, 158, 255, 255));
 
 }
 
@@ -186,7 +195,7 @@ QSlider::add-page:horizontal
 
 QSlider::handle:horizontal 
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(151, 109, 82, 255),stop:1 rgba(120, 87, 65, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 191, 255, 255),stop:1 rgba(38, 121, 255, 255));
 	width: 14px;
 	margin: -5px;
 	border-radius: 6px;
@@ -196,7 +205,7 @@ QSlider::handle:horizontal
 
 QSlider::handle:horizontal:hover 
 {
-	background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(121, 79, 52, 255),stop:1 rgba(90, 57, 35, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(86, 195, 255, 255),stop:1 rgba(86, 158, 255, 255));
 
 }
 
