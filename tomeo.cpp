@@ -34,7 +34,7 @@
 #include <QSizePolicy>
 #include <QSlider>
 #include <QProgressBar>
-
+#include <QFile>
 std::vector<QString> titles;
 //QString path;
 
@@ -132,12 +132,16 @@ std::vector<int> search_results(QString sQuery) {
 
 
 int main(int argc, char *argv[]) {
-
     // let's just check that Qt is operational first
     qDebug() << "Qt version: " << QT_VERSION_STR << endl;
 
     // create the Qt Application
     QApplication app(argc, argv);
+
+    QFile styleSheetFile("./TomeoStyle.qss");
+    styleSheetFile.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(styleSheetFile.readAll());
+    app.setStyleSheet(styleSheet);
 
     // collect all the videos in the folder
     std::vector<TheButtonInfo> videos;
@@ -223,36 +227,9 @@ int main(int argc, char *argv[]) {
     QWidget *vol_layout_widget = new QWidget();
 
     vol_layout_widget->setLayout(vol_layout);
-//    int vol = player->volume();
-//    vol_info->setText(QString::number(vol));
 
 
 
-    //Progress Bar
-    //QProgressBar *pbar = new QProgressBar();
-    //pbar->setRange(0,1000000);
-    //pbar->setValue(500000);
-
-    //pbar->connect(player, SIGNAL(positionChanged()), pbar, SLOT(setValue()));
-
-
-
-
-    // create the four buttons
-//     int counter = 0;
-//     for ( auto video : videos ) {
-//        TheButton *button = new TheButton(buttonWidget);
-//        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
-//        buttons.push_back(button);
-//        layout->addWidget(button);
-//        //adding a video description label
-//        QLabel * vidDesc = new QLabel();
-//        vidDesc->setText(titles.at(counter) +"\t dd/mm/yyyy\n");
-//        vidDesc->setAlignment(Qt::AlignCenter);
-//        layout->addWidget(vidDesc);
-//        button->init(&video);
-//        counter ++;
-//    }
 
     std::vector<TheButtonInfo> searchVideos;
     std::vector<int> searchIndices = search_results("d");
