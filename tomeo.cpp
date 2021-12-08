@@ -111,6 +111,45 @@ void set_search_layout(QHBoxLayout * sl){
     sl->addWidget(search_button);
 }
 
+QSlider * set_volume_layout(QHBoxLayout * vl , ThePlayer * player){
+    QSlider *volume = new QSlider(Qt::Horizontal);
+    volume->setMaximum(100);
+    volume->setMinimum(0);
+    volume->setValue(player->volume());
+    QLabel *vol_label = new QLabel();
+    vol_label->setText("Current Volume:");
+
+    QLabel *vol_info = new QLabel();
+    vol_info->setNum(player->volume());
+
+    volume->connect(volume, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
+    vol_info->connect(volume, SIGNAL(valueChanged(int)), vol_info, SLOT(setNum(int)));
+
+    vl->addWidget(vol_label);
+    vl->addWidget(vol_info);
+    return volume;
+}
+
+void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
+    QPushButton *b_play_pause = new QPushButton();
+    b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
+    b_play_pause->setText("Play/Pause");
+
+    // Button to rewind video 5 seconds
+    QPushButton *b_rewind = new QPushButton();
+    b_rewind->setText("Rewind");
+    b_rewind->connect(b_rewind, SIGNAL(clicked()), player, SLOT(rwnd()));
+    pl->addWidget(b_rewind);
+    // Button to fastforward video 5 seconds
+    QPushButton *b_fastforward = new QPushButton();
+    b_fastforward->setText("Fast Forward");
+    b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
+    //add play pause to the middle
+    pl->addWidget(b_play_pause);
+    pl->addWidget(b_fastforward);
+}
+
+
 std::vector<int> search_results(QString sQuery) {
     std::vector<int> indices;
     for (int i = 0; i < titles.size(); i++ ) {
@@ -179,7 +218,6 @@ int main(int argc, char *argv[]) {
     QWidget *search_widget = new QWidget();
     search_widget->setLayout(search_layout);
 
-
     // the widget that will show the video
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -196,43 +234,20 @@ int main(int argc, char *argv[]) {
     buttonWidget->setLayout(layout);
 
 
-
     // creates a button for each video
     //currently this creates 6 buttons (video g doesn't seem to work)
 
-   
 
     // Iteration 2 - volume stuff
     // Volume slider to control volume of video playback
     // Label vol_info that updates relative to current volume set
     QHBoxLayout *vol_layout = new QHBoxLayout();
-
-    QSlider *volume = new QSlider(Qt::Horizontal);
-    volume->setMaximum(100);
-    volume->setMinimum(0);
-    volume->setValue(player->volume());
-    QLabel *vol_label = new QLabel();
-    vol_label->setText("Current Volume:");
-
-    QLabel *vol_info = new QLabel();
-    vol_info->setNum(player->volume());
-
-
-    volume->connect(volume, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
-    vol_info->connect(volume, SIGNAL(valueChanged(int)), vol_info, SLOT(setNum(int)));
-
-
-    vol_layout->addWidget(vol_label);
-    vol_layout->addWidget(vol_info);
+    QSlider * volume = set_volume_layout(vol_layout, player);
     QWidget *vol_layout_widget = new QWidget();
-
     vol_layout_widget->setLayout(vol_layout);
 
-
-
-
     std::vector<TheButtonInfo> searchVideos;
-    std::vector<int> searchIndices = search_results("d");
+    std::vector<int> searchIndices = search_results("abc");
 
 
     if (searchIndices.size() != 0) {
@@ -244,7 +259,7 @@ int main(int argc, char *argv[]) {
             layout->addWidget(button);
             //adding a video description label
             QLabel * vidDesc = new QLabel();
-            vidDesc->setText(titles.at(index) +"\t dd/mm/yyyy\n");
+            vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
             vidDesc->setAlignment(Qt::AlignCenter);
             layout->addWidget(vidDesc);
             button->init(&videos.at(index));
@@ -275,22 +290,9 @@ int main(int argc, char *argv[]) {
 
     // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
     // Button to play/pause the video
-    QPushButton *b_play_pause = new QPushButton();
-    b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
-    b_play_pause->setText("Play/Pause");
 
-    // Button to rewind video 5 seconds
-    QPushButton *b_rewind = new QPushButton();
-    b_rewind->setText("Rewind");
-    b_rewind->connect(b_rewind, SIGNAL(clicked()), player, SLOT(rwnd()));
-    video_buttons->addWidget(b_rewind);
-    // Button to fastforward video 5 seconds
-    QPushButton *b_fastforward = new QPushButton();
-    b_fastforward->setText("Fast Forward");
-    b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
-    //add play pause to the middle
-    video_buttons->addWidget(b_play_pause);
-    video_buttons->addWidget(b_fastforward);
+    //sets the layut of the playback buttons
+    set_playback_layout(video_buttons, player);
 
     // Widget for media player buttons
     QWidget *Player_w = new QWidget();
@@ -319,10 +321,9 @@ int main(int argc, char *argv[]) {
 
     // Right side of the screen is just the video widget for now
 
-    right->addWidget(videoWidget);
-    right->addWidget(Player_w);
+    right->addWidget(videoWidget);    
     right->addWidget(player->p_slider);
-
+    right->addWidget(Player_w);
 
     // make these layouts into widgets
     QWidget *left_layout = new QWidget();
@@ -339,23 +340,12 @@ int main(int argc, char *argv[]) {
     top->addWidget(left_layout, 25);
     top->addWidget(right_layout, 75);
 
-    //creating a placeholder layout for the menu
-    QHBoxLayout * MLayout = new QHBoxLayout();
-    QLabel * MenuText = new QLabel();
-    //creating placeholder text for the menu, this will be replaced by buttons later
-    MenuText->setText("Menu");
-    MenuText->setAlignment(Qt::AlignCenter);
-    MenuText->setFrameStyle(1);
-    MLayout->addWidget(MenuText);
-    QWidget * menuBar = new QWidget();
-    menuBar->setLayout(MLayout);
 
     //layout for the rest of the page
     QWidget * topWidget = new QWidget();
     topWidget->setLayout(top);
     //final layout
     QVBoxLayout * screenLayout = new QVBoxLayout();
-    screenLayout->addWidget(menuBar,15);
     screenLayout->addWidget(topWidget, 85);
 
 
