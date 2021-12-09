@@ -249,19 +249,29 @@ int main(int argc, char *argv[]) {
     std::vector<TheButtonInfo> searchVideos;
     std::vector<int> searchIndices = search_results("abc");
 
-
+    QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
     if (searchIndices.size() != 0) {
         for(auto index : searchIndices) {
+            qDebug("%d",index);
             TheButton *button = new TheButton(buttonWidget);
             button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
             buttons.push_back(button);
             searchVideos.push_back(videos.at(index));
-            layout->addWidget(button);
+            if(index == 6)
+            {
+                button->setIconSize(QSize(0,0));
+                button->setText("Slow Motion");
+                video_buttons->addWidget(button);
+
+            }
+            else{
+                layout->addWidget(button);
+                QLabel * vidDesc = new QLabel();
+                vidDesc->setText(titles.at(index) +"\t dd/mm/yyyy\n");
+                vidDesc->setAlignment(Qt::AlignCenter);
+                layout->addWidget(vidDesc);
+            }
             //adding a video description label
-            QLabel * vidDesc = new QLabel();
-            vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
-            vidDesc->setAlignment(Qt::AlignCenter);
-            layout->addWidget(vidDesc);
             button->init(&videos.at(index));
         }
     }
@@ -277,7 +287,6 @@ int main(int argc, char *argv[]) {
     // These are the two sides of the screen that are later combined in the 'top' layout
     QVBoxLayout *left = new QVBoxLayout(); //left side of screen
     QVBoxLayout *right = new QVBoxLayout(); // right side of screen
-    QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
 
     //QSlider *p_slider = new QSlider();
 
