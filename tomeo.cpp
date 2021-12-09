@@ -290,10 +290,11 @@ int main(int argc, char *argv[]) {
 
     for(auto index : searchIndices) {
         TheButton *button = new TheButton(buttonWidget);
+
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
         buttons.push_back(button);
         searchVideos.push_back(videos.at(index));
-        if(index == 6)
+        if(titles.at(index) == "h")
         {
             button->setIconSize(QSize(0,0));
             button->setText("Slow motion");
