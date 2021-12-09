@@ -71,6 +71,11 @@ void ThePlayer::rwnd(){
     this->setPosition(v_position);
 }
 
+void ThePlayer::stop() {
+    this->setPosition(qint64(0));
+    this->pause();
+}
+
 void ThePlayer::switchState() {
 
     if(state() == StoppedState) play();

@@ -35,6 +35,7 @@
 #include <QSlider>
 #include <QProgressBar>
 #include <QFile>
+#include <QPixmap>
 std::vector<QString> titles;
 //QString path;
 
@@ -145,6 +146,10 @@ void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
     b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
     b_play_pause->setText("Play/Pause");
 
+    QPushButton * b_stop = new QPushButton();
+    b_stop->connect(b_stop, SIGNAL(clicked()), player, SLOT(stop()));
+    b_stop->setText("Stop");
+
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
     b_rewind->setText("Rewind");
@@ -156,6 +161,7 @@ void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
     b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
     //add play pause to the middle
     pl->addWidget(b_play_pause);
+    pl->addWidget(b_stop);
     pl->addWidget(b_fastforward);
 }
 

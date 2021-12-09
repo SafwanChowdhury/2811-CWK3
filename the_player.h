@@ -57,6 +57,7 @@ public slots:
     void fstfwrd();
     void rwnd();
     void switchState();
+    void stop();
 signals:
 	void posChanged(int);
     void durChanged(int);
