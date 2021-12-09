@@ -100,9 +100,12 @@ void set_search_layout(QHBoxLayout * sl){
     QLineEdit *search_text = new QLineEdit();
     QPushButton *search_button = new QPushButton();
     QLabel *l_search = new QLabel();
+    QPixmap search("search.png");
+    QIcon button(search);
+    search_button->setIcon(search);
     l_search->setText("Search/Filter");
     search_text->setPlaceholderText("Enter Text");
-    search_button->setText("Search");
+    //search_button->setText("Search");
 
     //Add widgets to layout
     sl->addWidget(l_search);
@@ -143,21 +146,35 @@ QSlider * set_volume_layout(QHBoxLayout * vl , ThePlayer * player){
 
 void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
     QPushButton *b_play_pause = new QPushButton();
+    QPixmap pixmap_p("play.png");
+    QIcon ButtonIcon(pixmap_p);
+    b_play_pause->setIcon(ButtonIcon);
+    b_play_pause->setIconSize(QSize(25,25));
+    //b_play_pause->setIconSize(pixmap.rect().size());
     b_play_pause->connect(b_play_pause,SIGNAL(clicked()),player,SLOT(switchState()));
-    b_play_pause->setText("Play/Pause");
+    //b_play_pause->setText("Play/Pause");
 
     QPushButton * b_stop = new QPushButton();
+    QPixmap pixmap_stop("stop.png");
+    QIcon stop_button(pixmap_stop);
+    b_stop->setIcon(stop_button);
     b_stop->connect(b_stop, SIGNAL(clicked()), player, SLOT(stop()));
-    b_stop->setText("Stop");
+    //b_stop->setText("Stop");
 
     // Button to rewind video 5 seconds
     QPushButton *b_rewind = new QPushButton();
-    b_rewind->setText("Rewind");
+    QPixmap pixmap_r("rewind-button.png");
+    QIcon r_button(pixmap_r);
+    b_rewind->setIcon(r_button);
+    //b_rewind->setText("Rewind");
     b_rewind->connect(b_rewind, SIGNAL(clicked()), player, SLOT(rwnd()));
     pl->addWidget(b_rewind);
     // Button to fastforward video 5 seconds
     QPushButton *b_fastforward = new QPushButton();
-    b_fastforward->setText("Fast Forward");
+    QPixmap pixmap_s("skip.png");
+    QIcon s_button(pixmap_s);
+    b_fastforward->setIcon(s_button);
+    //b_fastforward->setText("Fast Forward");
     b_fastforward->connect(b_fastforward, SIGNAL(clicked()), player, SLOT(fstfwrd()));
     //add play pause to the middle
     pl->addWidget(b_play_pause);
@@ -297,7 +314,8 @@ int main(int argc, char *argv[]) {
         if(titles.at(index) == "h")
         {
             button->setIconSize(QSize(0,0));
-            button->setText("Slow motion");
+            button->setText("0.5x");
+            button->setStyleSheet("font-weight: bold; color: black; font-size: 13px");
             video_buttons->addWidget(button);
 
         }
