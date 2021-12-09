@@ -285,28 +285,41 @@ int main(int argc, char *argv[]) {
 
     std::vector<TheButtonInfo> searchVideos;
     std::vector<int> searchIndices = search_results("abc");
+
+    QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
+
     for(auto index : searchIndices) {
         TheButton *button = new TheButton(buttonWidget);
         button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
         buttons.push_back(button);
         searchVideos.push_back(videos.at(index));
-        layout->addWidget(button);
-        //adding a video description label
-        QLabel * vidDesc = new QLabel();
-        vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
-        vidDesc->setAlignment(Qt::AlignCenter);
-        layout->addWidget(vidDesc);
+        if(index == 6)
+        {
+            button->setIconSize(QSize(0,0));
+            button->setText("Slow motion");
+            video_buttons->addWidget(button);
+
+        }
+        else
+        {
+            layout->addWidget(button);
+            //adding a video description label
+            QLabel * vidDesc = new QLabel();
+            vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
+            vidDesc->setAlignment(Qt::AlignCenter);
+            layout->addWidget(vidDesc);
+        }
         button->init(&videos.at(index));
     }
+
+    //sets the layout of the playback buttons
+    set_playback_layout(video_buttons, player);
 
     // tell the player what buttons and videos are available
     player->setContent(&buttons, & searchVideos);
 
     set_slider(player);
 
-    QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
-    //sets the layout of the playback buttons
-    set_playback_layout(video_buttons, player);
 
     //implementing scroll area
     QScrollArea * videoScroll = set_scroll_area(buttonWidget);
