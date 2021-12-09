@@ -137,7 +137,7 @@ QMenu::item:disabled
 /*-----QPushButton-----*/
 QPushButton
 {
-    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 191, 255, 255),stop:1 rgba(38, 121, 255, 255));
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 191, 255, 255),stop:1 rgba(45, 126, 255, 255));
     color: #ffffff;
     border-color: #000000;
 	min-width: 80px;
@@ -160,7 +160,7 @@ QPushButton::hover
 
 QPushButton::pressed
 {
-        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(55, 105, 255, 255),stop:1 rgba(55, 75, 255, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 140, 255, 255),stop:1 rgba(1, 125, 255, 255));
         color: #ffffff;
 	border-color: #000000;
 	border-radius: 3px;
@@ -170,7 +170,7 @@ QPushButton::pressed
 
 QPushButton::checked
 {
-        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(55, 105, 255, 255),stop:1 rgba(55, 75, 255, 255));
+        background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(0, 140, 255, 255),stop:1 rgba(1, 125, 255, 255));
 	color: #000000;
 	border-color: #000000;
 	border-radius: 3px;
@@ -271,7 +271,7 @@ QScrollBar::handle:vertical
 {
    border: none;
    border-radius : 0px;
-   background-color: #7a7a7a;
+   background-color: #828282;
    min-height: 80px;
    width : 12px;
 
@@ -370,7 +370,7 @@ QScrollBar::handle:horizontal
 {
    border: none;
    border-radius : 0px;
-   background-color: #7a7a7a;
+   background-color: #828282;
    min-height: 80px;
    height : 12px;
 
