@@ -49,8 +49,6 @@ std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
         QString f = it.next();
 
-
-
             if (f.contains("."))
 
 #if defined(_WIN32)
@@ -111,22 +109,34 @@ void set_search_layout(QHBoxLayout * sl){
     sl->addWidget(search_button);
 }
 
+QScrollArea * set_scroll_area(QWidget * buttonWidget){
+    QScrollArea * videoScroll = new QScrollArea();
+    videoScroll->setWidget(buttonWidget);
+    videoScroll->setAlignment(Qt::AlignHCenter);
+    return videoScroll;
+}
+
 QSlider * set_volume_layout(QHBoxLayout * vl , ThePlayer * player){
+    //slider that will allow the user to change the volume of the video
     QSlider *volume = new QSlider(Qt::Horizontal);
     volume->setMaximum(100);
     volume->setMinimum(0);
     volume->setValue(player->volume());
+
+    //pair of labels used to display the volume below the slider
     QLabel *vol_label = new QLabel();
     vol_label->setText("Current Volume:");
-
     QLabel *vol_info = new QLabel();
     vol_info->setNum(player->volume());
 
+    //connecting the slider to the player
     volume->connect(volume, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
     vol_info->connect(volume, SIGNAL(valueChanged(int)), vol_info, SLOT(setNum(int)));
 
+    //setting the layout
     vl->addWidget(vol_label);
     vl->addWidget(vol_info);
+    vl->setAlignment(Qt::AlignCenter);
     return volume;
 }
 
@@ -149,10 +159,35 @@ void set_playback_layout(QHBoxLayout * pl, ThePlayer * player){
     pl->addWidget(b_fastforward);
 }
 
-void set_right_layout(QVBoxLayout * right, QWidget * Player_w, QVideoWidget * videoWidget, QSlider * slider){
+QWidget * set_right_layout(QVBoxLayout * right, QWidget * Player_w, QVideoWidget * videoWidget, QSlider * slider){
     right->addWidget(videoWidget);
     right->addWidget(slider);
     right->addWidget(Player_w);
+
+    QWidget *right_layout = new QWidget();
+    right_layout->setLayout(right);
+    return right_layout;
+
+}
+
+void set_slider(ThePlayer * player){
+
+    player->p_slider->setOrientation(Qt::Horizontal);
+    player->p_slider->connect(player->p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
+    player->p_slider->connect(player,SIGNAL(posChanged(int)),player->p_slider,SLOT(setValue(int)));
+
+}
+
+QWidget * set_left_layout(QVBoxLayout * left, QWidget * search_widget, QSlider * volume, QWidget * vol_layout_widget, QScrollArea * videoScroll){
+    left->addWidget(search_widget);
+    left->addWidget(videoScroll);
+    left->addWidget(volume);
+    left->addWidget(vol_layout_widget);
+    // make these layouts into widgets
+    QWidget *left_layout = new QWidget();
+    left_layout->setLayout(left);
+    return left_layout;
+
 }
 
 std::vector<int> search_results(QString sQuery) {
@@ -172,8 +207,6 @@ std::vector<int> search_results(QString sQuery) {
     }
     return indices;
 }
-
-
 
 int main(int argc, char *argv[]) {
     // let's just check that Qt is operational first
@@ -214,7 +247,6 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
-
     // Create widget of search field and button to accompany it
     QHBoxLayout *search_layout = new QHBoxLayout();
     //set the layout of the search
@@ -238,7 +270,6 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
 
-    // Iteration 2 - volume stuff
     // Volume slider to control volume of video playback
     // Label vol_info that updates relative to current volume set
     QHBoxLayout *vol_layout = new QHBoxLayout();
@@ -248,89 +279,57 @@ int main(int argc, char *argv[]) {
 
     std::vector<TheButtonInfo> searchVideos;
     std::vector<int> searchIndices = search_results("abc");
-
-    if (searchIndices.size() != 0) {
-        for(auto index : searchIndices) {
-            TheButton *button = new TheButton(buttonWidget);
-            button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
-            buttons.push_back(button);
-            searchVideos.push_back(videos.at(index));
-            layout->addWidget(button);
-            //adding a video description label
-            QLabel * vidDesc = new QLabel();
-            vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
-            vidDesc->setAlignment(Qt::AlignCenter);
-            layout->addWidget(vidDesc);
-            button->init(&videos.at(index));
-        }
+    for(auto index : searchIndices) {
+        TheButton *button = new TheButton(buttonWidget);
+        button->connect(button, SIGNAL(jumpTo(TheButtonInfo* )), player, SLOT (jumpTo(TheButtonInfo*))); // when clicked, tell the player to play.
+        buttons.push_back(button);
+        searchVideos.push_back(videos.at(index));
+        layout->addWidget(button);
+        //adding a video description label
+        QLabel * vidDesc = new QLabel();
+        vidDesc->setText(titles.at(index) +"\t 16/11/2020\n");
+        vidDesc->setAlignment(Qt::AlignCenter);
+        layout->addWidget(vidDesc);
+        button->init(&videos.at(index));
     }
 
     // tell the player what buttons and videos are available
     player->setContent(&buttons, & searchVideos);
 
-    // create the main window and layout
-    QWidget window;
+    set_slider(player);
 
-    // These are the two sides of the screen that are later combined in the 'top' layout
-    QVBoxLayout *left = new QVBoxLayout(); //left side of screen
-    QVBoxLayout *right = new QVBoxLayout(); // right side of screen
     QHBoxLayout *video_buttons = new QHBoxLayout();// buttons for media player
-
-    //QSlider *p_slider = new QSlider();
-
-    //p_slider->setMaximum()
-    player->p_slider->setOrientation(Qt::Horizontal);
-    //player->p_slider->setRange(0,19);
-    player->p_slider->connect(player->p_slider,SIGNAL(sliderMoved(int)),player,SLOT(seek(int)));
-    player->p_slider->connect(player,SIGNAL(posChanged(int)),player->p_slider,SLOT(setValue(int)));
-    //p_slider->connect(player,SIGNAL(durChanged(int)),p_slider,SLOT(scaleSlider(int)));
-
-    // syntax for connect(first_widget/object -> SIGNAL(signal_it_emits()) -> object_widget_to_change -> SLOT(function_to_do_something_with_obj/wid2())
-    // Button to play/pause the video
-
-    //sets the layut of the playback buttons
+    //sets the layout of the playback buttons
     set_playback_layout(video_buttons, player);
+
+    //implementing scroll area
+    QScrollArea * videoScroll = set_scroll_area(buttonWidget);
 
     // Widget for media player buttons
     QWidget *Player_w = new QWidget();
     Player_w->setLayout(video_buttons);
 
-    window.setWindowTitle("tomeo");
-    window.setMinimumSize(800, 680);
+    // left and right are the two sides of the screen that are later combined in the 'top' layout
+    QVBoxLayout *left = new QVBoxLayout(); //left side of screen
+    // Add the search widget, scroll area and volume controll to the left layout
+    QWidget * left_layout = set_left_layout(left, search_widget, volume, vol_layout_widget, videoScroll);
 
-    // This is the top layout, where the left and right side layouts will be combined
-    QHBoxLayout *top = new QHBoxLayout();
+    QVBoxLayout *right = new QVBoxLayout(); // right side of screen
+    // Add video player, slider and video buttons to the right layout
+    QWidget * right_layout = set_right_layout(right, Player_w, videoWidget, player->p_slider);
 
-    // Add the search bar, search button and the 4 videos to the left side layout
-    left->addWidget(search_widget);
-
-    //implementing scroll area
-    QScrollArea * videoScroll = new QScrollArea();
-    videoScroll->setWidget(buttonWidget);
-    videoScroll->setAlignment(Qt::AlignHCenter);
-    left->addWidget(videoScroll);
-
-    // Add stretch means results stay near the top of the screen rather than spacing evenly
-    //removing add stretch allows the scroll area to resize nicely
-    //left->addStretch(1);
-    left->addWidget(volume);
-    left->addWidget(vol_layout_widget);
-
-    // Right side of the screen is just the video widget for now
-    set_right_layout(right, Player_w, videoWidget, player->p_slider);
-
-    // make these layouts into widgets
-    QWidget *left_layout = new QWidget();
-    QWidget *right_layout = new QWidget();
-
-    left_layout->setLayout(left);
-    right_layout->setLayout(right);
+    // This is the main layout, where the left and right side layouts will be combined
+    QHBoxLayout *mainLayout = new QHBoxLayout();
 
     // to create a 1:3 screen ratio of left to right, adding left and right to top level
-    top->addWidget(left_layout, 25);
-    top->addWidget(right_layout, 75);
+    mainLayout->addWidget(left_layout, 25);
+    mainLayout->addWidget(right_layout, 75);
 
-    window.setLayout(top);
+    // create the main window and layout
+    QWidget window;
+    window.setWindowTitle("tomeo");
+    window.setMinimumSize(800, 680);
+    window.setLayout(mainLayout);
 
     // showtime!
     window.show();
